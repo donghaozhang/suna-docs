@@ -26,13 +26,23 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
                     code(props) {
                         const { children, className } = props;
                         const match = /language-(\w+)/.exec(className || '');
-                        const content = String(children).replace(/\n$/, '');
+                        let content = String(children).replace(/\n$/, '');
                         
-                        // Check if this is a graph (contains arrow notation)
-                        const isGraph = content.includes('-->') && (
+                        // Decode HTML entities
+                        content = content
+                            .replace(/&gt;/g, '>')
+                            .replace(/&lt;/g, '<')
+                            .replace(/&amp;/g, '&')
+                            .replace(/&quot;/g, '"')
+                            .replace(/&#39;/g, "'");
+                        
+                        // Check if this is a graph (contains arrow notation or graph language)
+                        const isGraph = (
                             match?.[1] === 'graph' || 
                             match?.[1] === 'mermaid' ||
-                            /^[A-Z]\s*-->\s*[A-Z]/.test(content.trim())
+                            content.includes('-->') ||
+                            /\w+\s*-->\s*\w+/.test(content) ||
+                            /graph\s+(TD|TB|BT|RL|LR)/.test(content)
                         );
                         
                         if (isGraph) {
