@@ -156,7 +156,7 @@ const parseGraphContent = (content: string): { nodes: Node[], edges: Edge[] } =>
         target: toId,
         type: 'smoothstep',
         style: { 
-          stroke: 'url(#edge-gradient)', 
+          stroke: '#6366f1', 
           strokeWidth: 3,
           filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
         },
@@ -208,12 +208,7 @@ export default function GraphRenderer({ content, className }: GraphRendererProps
         minZoom={0.2}
         maxZoom={2}
       >
-        <defs>
-          <linearGradient id="edge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6366f1" />
-            <stop offset="100%" stopColor="#8b5cf6" />
-          </linearGradient>
-        </defs>
+
         <Controls 
           position="top-left" 
           showZoom={true} 
