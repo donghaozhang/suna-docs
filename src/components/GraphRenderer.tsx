@@ -12,6 +12,8 @@ import {
   Connection,
   Edge,
   Node,
+  MarkerType,
+  BackgroundVariant,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
@@ -31,7 +33,7 @@ const parseGraphContent = (content: string): { nodes: Node[], edges: Edge[] } =>
   const lines = content.split('\n').filter(line => line.trim());
   const parsedNodes: ParsedNode[] = [];
   
-  lines.forEach((line, index) => {
+  lines.forEach((line) => {
     // Parse lines like "A --> B[Navigate]" or "A[Tool_Base] --> B[Browser Tool]"
     const arrowMatch = line.match(/^(\w+)(?:\[([^\]]+)\])?\s*-->\s*(\w+)(?:\[([^\]]+)\])?/);
     if (arrowMatch) {
@@ -96,7 +98,7 @@ const parseGraphContent = (content: string): { nodes: Node[], edges: Edge[] } =>
         type: 'smoothstep',
         style: { stroke: '#6366f1', strokeWidth: 2 },
         markerEnd: {
-          type: 'arrowclosed',
+          type: MarkerType.ArrowClosed,
           width: 20,
           height: 20,
           color: '#6366f1',
@@ -113,7 +115,7 @@ export default function GraphRenderer({ content, className }: GraphRendererProps
     parseGraphContent(content), [content]
   );
   
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
@@ -145,7 +147,7 @@ export default function GraphRenderer({ content, className }: GraphRendererProps
           position="top-right"
           nodeColor={(node) => node.style?.background as string || '#6366f1'}
         />
-        <Background variant="dots" gap={12} size={1} />
+        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
       </ReactFlow>
     </div>
   );

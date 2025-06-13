@@ -24,7 +24,7 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
             <ReactMarkdown
                 components={{
                     code(props) {
-                        const { children, className, node, ...rest } = props;
+                        const { children, className } = props;
                         const match = /language-(\w+)/.exec(className || '');
                         const content = String(children).replace(/\n$/, '');
                         
@@ -41,7 +41,6 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
                         
                         return match ? (
                             <SyntaxHighlighter
-                                {...rest}
                                 PreTag="div"
                                 language={match[1]}
                                 style={oneDark}
@@ -55,7 +54,7 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
                                 {content}
                             </SyntaxHighlighter>
                         ) : (
-                            <code {...rest} className={`${className} bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm`}>
+                            <code className={`${className} bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm`}>
                                 {children}
                             </code>
                         );
