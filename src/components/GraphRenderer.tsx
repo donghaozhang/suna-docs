@@ -127,16 +127,19 @@ const parseGraphContent = (content: string): { nodes: Node[], edges: Edge[] } =>
         label: node.label,
       },
       style: {
-        background: level === 0 ? '#6366f1' : '#10b981',
+        background: level === 0 
+          ? 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)' 
+          : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
         color: 'white',
-        border: '1px solid #222',
-        borderRadius: '8px',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        borderRadius: '12px',
         padding: '12px 16px',
         fontSize: '14px',
         fontWeight: 'bold',
         minWidth: '140px',
         textAlign: 'center',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        boxShadow: '0 8px 25px rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.1)',
+        backdropFilter: 'blur(10px)',
       },
       type: 'default',
     };
@@ -152,7 +155,11 @@ const parseGraphContent = (content: string): { nodes: Node[], edges: Edge[] } =>
         source: fromId,
         target: toId,
         type: 'smoothstep',
-        style: { stroke: '#6366f1', strokeWidth: 2 },
+        style: { 
+          stroke: 'url(#edge-gradient)', 
+          strokeWidth: 3,
+          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+        },
         markerEnd: {
           type: MarkerType.ArrowClosed,
           width: 20,
@@ -188,7 +195,7 @@ export default function GraphRenderer({ content, className }: GraphRendererProps
   }
 
   return (
-    <div className={`h-[500px] w-full border rounded-lg bg-white ${className || ''}`}>
+    <div className={`h-[500px] w-full border rounded-lg bg-gradient-to-br from-slate-50 to-blue-50 shadow-lg ${className || ''}`}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -201,13 +208,43 @@ export default function GraphRenderer({ content, className }: GraphRendererProps
         minZoom={0.2}
         maxZoom={2}
       >
-        <Controls position="top-left" showZoom={true} showFitView={true} showInteractive={false} />
+        <defs>
+          <linearGradient id="edge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#6366f1" />
+            <stop offset="100%" stopColor="#8b5cf6" />
+          </linearGradient>
+        </defs>
+        <Controls 
+          position="top-left" 
+          showZoom={true} 
+          showFitView={true} 
+          showInteractive={false}
+          style={{ 
+            background: 'rgba(255, 255, 255, 0.9)', 
+            border: '1px solid #e2e8f0',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+          }}
+        />
         <MiniMap 
           position="top-right"
           nodeColor={(node) => node.style?.background as string || '#6366f1'}
-          style={{ background: '#f8f9fa', border: '1px solid #e9ecef' }}
+          style={{ 
+            background: 'rgba(255, 255, 255, 0.9)', 
+            border: '1px solid #e2e8f0',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+          }}
         />
-        <Background variant={BackgroundVariant.Dots} gap={12} size={1} color="#e9ecef" />
+        <Background 
+          variant={BackgroundVariant.Dots} 
+          gap={20} 
+          size={1.5} 
+          color="rgba(59, 130, 246, 0.15)"
+          style={{
+            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%)'
+          }}
+        />
       </ReactFlow>
     </div>
   );
