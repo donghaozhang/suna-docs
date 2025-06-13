@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Next.js 15 Patterns
+
+## Async Params Handling
+In Next.js 15, dynamic route parameters are now asynchronous and must be awaited before use.
+
+### Page Components with Dynamic Routes
+```typescript
+// ✅ Correct - Async component with awaited params
+export default async function DocPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const doc = getDocById(slug);
+    // ... rest of component
+}
+
+// ❌ Incorrect - Direct params access (causes runtime error)
+export default function DocPage({ params }: { params: { slug: string } }) {
+    const doc = getDocById(params.slug); // Error: params should be awaited
+}
+```
+
+### Key Points
+- Always mark page components as `async` when using dynamic routes
+- Type params as `Promise<{ [key]: string }>` instead of direct object
+- Destructure params after awaiting: `const { slug } = await params;`
+- This applies to all dynamic routes: `[slug]`, `[id]`, `[...paths]`, etc.
+
+### Reference Implementation
+See [src/app/docs/[slug]/page.tsx](mdc:src/app/docs/[slug]/page.tsx) for the correct async params pattern.
+

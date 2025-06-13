@@ -1,0 +1,48 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Documentation Rendering Patterns
+
+## Enhanced Markdown Rendering
+The documentation system uses ReactMarkdown with enhanced rendering capabilities for code blocks and graph visualization.
+
+### Code Block Enhancement
+Code blocks are rendered with syntax highlighting using `react-syntax-highlighter`:
+- Uses `oneDark` theme for professional appearance
+- Supports all major programming languages
+- Includes proper styling with rounded corners and spacing
+- Inline code gets background highlighting
+
+### Graph Visualization
+Hierarchical structures (like tool architectures) are automatically detected and rendered as interactive graphs:
+
+```
+// This content pattern triggers graph rendering:
+A[Tool_Base] --> B[Browser Tool]
+A --> C[Files Tool]
+B --> B1[Navigate]
+```
+
+### Detection Logic
+The system detects graph content when:
+- Content contains arrow notation (`-->`)
+- Language is tagged as `graph` or `mermaid`
+- Pattern matches hierarchical structure format
+
+### Custom Components
+- **GraphRenderer**: Parses arrow notation and renders interactive graphs
+- **SyntaxHighlighter**: Handles code syntax highlighting
+- **ReactMarkdown**: Base markdown processor with custom component overrides
+
+### Key Features
+- **Interactive graphs**: Drag, zoom, pan capabilities
+- **Automatic layout**: Smart positioning of nodes and edges
+- **Visual hierarchy**: Color-coded nodes (blue for root, green for children)
+- **Fallback handling**: Falls back to syntax highlighting if not graph content
+
+### Reference Files
+- [src/app/docs/[slug]/page.tsx](mdc:src/app/docs/[slug]/page.tsx) - Main rendering logic
+- [src/components/GraphRenderer.tsx](mdc:src/components/GraphRenderer.tsx) - Graph visualization component
+

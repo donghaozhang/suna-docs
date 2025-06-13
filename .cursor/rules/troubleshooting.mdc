@@ -1,0 +1,65 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Troubleshooting Guide
+
+## Common Issues & Solutions
+
+### Next.js 15 Async Params Error
+**Error**: `Route "/docs/[slug]" used params.slug. params should be awaited before using its properties`
+
+**Solution**: 
+1. Make the page component `async`
+2. Change params type to `Promise<{ key: string }>`
+3. Await params before accessing properties
+
+```typescript
+// Fix this pattern:
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    // Now use slug safely
+}
+```
+
+### Graph Rendering Not Working
+**Issue**: Hierarchical content not rendering as graphs
+
+**Troubleshooting**:
+1. Check if content includes arrow notation (`-->`)
+2. Verify graph patterns match regex: `/^[A-Z]\s*-->\s*[A-Z]/`
+3. Ensure GraphRenderer component has proper imports
+4. Check console for React Flow style imports
+
+### Syntax Highlighting Issues
+**Issue**: Code blocks showing as plain text
+
+**Solutions**:
+1. Verify `react-syntax-highlighter` is installed
+2. Check language detection in markdown (```python, ```javascript)
+3. Ensure `oneDark` theme is imported correctly
+4. Verify ReactMarkdown components override is working
+
+### TypeScript Errors
+**Common Issues**:
+- Missing types for React Flow components
+- Async component typing issues
+- Props interface mismatches
+
+**Solutions**:
+- Install `@types/react-syntax-highlighter`
+- Use proper Promise typing for async params
+- Check component prop interfaces match usage
+
+### Performance Issues
+**Graph Rendering Slow**:
+- Limit number of nodes in large graphs
+- Use `useMemo` for expensive calculations
+- Consider virtualization for very large datasets
+
+### Styling Issues
+**Prose Classes Not Applied**:
+- Check Tailwind Typography plugin is installed
+- Verify `max-w-none` is used when needed
+- Ensure custom components don't override prose styles

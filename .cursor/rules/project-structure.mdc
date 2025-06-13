@@ -1,0 +1,52 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Structure & Conventions
+
+## Suna Documentation System
+This is a Next.js 15 documentation system with enhanced rendering capabilities for technical documentation.
+
+## Directory Structure
+```
+src/
+├── app/
+│   └── docs/[slug]/
+│       └── page.tsx          # Dynamic documentation pages
+├── components/
+│   └── GraphRenderer.tsx     # Interactive graph visualization
+└── lib/
+    └── docs.ts              # Documentation data management
+```
+
+## Key Technologies
+- **Next.js 15**: Latest version with async params
+- **React 19**: Latest React with new features
+- **TypeScript**: Full type safety
+- **Tailwind CSS**: Styling with typography plugin
+- **ReactMarkdown**: Markdown processing
+- **React Syntax Highlighter**: Code syntax highlighting
+- **@xyflow/react**: Interactive graph rendering
+
+## File Naming Conventions
+- Components: PascalCase (e.g., `GraphRenderer.tsx`)
+- Pages: lowercase with square brackets for dynamic routes
+- Utilities: camelCase (e.g., `docs.ts`)
+
+## Component Patterns
+- Use `'use client'` directive for interactive components
+- All page components with dynamic routes must be async
+- Custom markdown components should handle both content types and fallbacks
+
+## Styling Guidelines
+- Use Tailwind CSS classes
+- Prose classes for typography (`prose lg:prose-xl`)
+- Consistent spacing and color schemes
+- Dark mode support where applicable
+
+## Dependencies Management
+- Keep dependencies up to date
+- Use exact versions for stability
+- Prefer modern React-compatible libraries
+
